@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         addItem()
 
         fab.setOnClickListener {
-            showAddDialog()
+            DialogUtils.showAddDialog(itemsList, repsCountAdapter, layoutInflater, this)
         }
 
     }
@@ -43,31 +43,6 @@ class MainActivity : AppCompatActivity() {
         itemsList.add(WorkoutItems("push-ups", 30, 0))
         itemsList.add(WorkoutItems("sit-ups", 45, 0))
         repsCountAdapter.notifyDataSetChanged()
-    }
-
-    private fun showAddDialog() {
-        val addDialog = AlertDialog.Builder(this)
-        val addDialogView = layoutInflater.inflate(R.layout.add_dialog, null)
-
-        val workoutNameInput : EditText = addDialogView.findViewById(R.id.workout_name_input)
-        val workoutTotalRepsInput : EditText = addDialogView.findViewById(R.id.workout_total_reps_input)
-        val cancelButton : Button = addDialogView.findViewById(R.id.btn_cancel)
-        val okayButton: Button = addDialogView.findViewById(R.id.btn_okay)
-
-        addDialog.setView(addDialogView)
-        val alertDialog: AlertDialog = addDialog.create()
-        alertDialog.setCanceledOnTouchOutside(false)
-
-        cancelButton.setOnClickListener { alertDialog.dismiss() }
-
-        okayButton.setOnClickListener {
-            itemsList.add(WorkoutItems(workoutNameInput.text.toString(), 0, Integer.parseInt(workoutTotalRepsInput.text.toString())))
-            repsCountAdapter.notifyDataSetChanged()
-            alertDialog.dismiss()
-        }
-
-        alertDialog.show()
-
     }
 
 }
