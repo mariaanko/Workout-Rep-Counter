@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.wordpress.mariaanko.workoutrepcounter.adapter.RepsCountAdapter
 import com.wordpress.mariaanko.workoutrepcounter.adapter.WorkoutItems
@@ -30,13 +31,24 @@ class DialogUtils {
             cancelButton.setOnClickListener { alertDialog.dismiss() }
 
             okayButton.setOnClickListener {
-                itemsList.add(
-                    WorkoutItems(
-                        workoutNameInput.text.toString(),
-                        "0",
-                        Integer.parseInt(workoutTotalRepsInput.text.toString())
+
+                if (workoutNameInput.text.toString() == "") {
+                    Toast.makeText(context, "Please enter workout name!", Toast.LENGTH_SHORT).show()
+                    alertDialog.dismiss()
+                } else if (workoutTotalRepsInput.text.toString() == "") {
+                    Toast.makeText(context, "Please enter total reps!", Toast.LENGTH_SHORT).show()
+                    alertDialog.dismiss()
+                } else {
+                    itemsList.add(
+                        WorkoutItems(
+                            workoutNameInput.text.toString(),
+                            "0",
+                            Integer.parseInt(workoutTotalRepsInput.text.toString()),
+                            0
+                        )
                     )
-                )
+                }
+
                 repsCountAdapter.notifyDataSetChanged()
                 alertDialog.dismiss()
             }
@@ -63,17 +75,23 @@ class DialogUtils {
             cancelButton.setOnClickListener { alertDialog.dismiss() }
 
             okayButton.setOnClickListener {
-                var repsDone = itemsList[index].repsDone
-                val repsLeft = itemsList[index].repsLeft
-                val repsDoneNow = Integer.parseInt(workoutDoneRepsInput.text.toString())
 
-                if (repsDone.equals("0")) {
-                    repsDone = ""
-                    itemsList[index].repsDone = "$repsDoneNow"
-                } else itemsList[index].repsDone = "$repsDone + $repsDoneNow"
-                itemsList[index].repsLeft = repsLeft - repsDoneNow
-                repsCountAdapter.notifyDataSetChanged()
-                alertDialog.dismiss()
+                if (workoutDoneRepsInput.text.toString() != "") {
+                    val repsDoneSummary = itemsList[index].repsDoneSummary
+                    val repsDone = itemsList[index].repsDone
+                    val repsLeft = itemsList[index].repsLeft
+                    val repsDoneNow = Integer.parseInt(workoutDoneRepsInput.text.toString())
+
+                    if (repsDoneSummary.equals("0")) {
+                        itemsList[index].repsDoneSummary = "$repsDoneNow"
+                    } else itemsList[index].repsDoneSummary = "$repsDoneSummary + $repsDoneNow"
+                    itemsList[index].repsLeft = repsLeft - repsDoneNow
+                    itemsList[index].repsDone = repsDone + repsDoneNow
+                    repsCountAdapter.notifyDataSetChanged()
+                    alertDialog.dismiss()
+                } else {
+                    alertDialog.dismiss()
+                }
             }
 
             alertDialog.show()

@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
-        repsCountAdapter = RepsCountAdapter(itemsList, layoutInflater, this )
+        repsCountAdapter = RepsCountAdapter(itemsList, layoutInflater, this)
 
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun addItem() {
 
-        itemsList.add(WorkoutItems("push-ups", "0", 30))
-        itemsList.add(WorkoutItems("sit-ups", "0", 25))
+        itemsList.add(WorkoutItems("push-ups", "0", 30, 0))
+        itemsList.add(WorkoutItems("sit-ups", "0", 25, 0))
         repsCountAdapter.notifyDataSetChanged()
     }
 

@@ -20,7 +20,8 @@ class RepsCountAdapter(
     inner class RepsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var workoutNameTextView: TextView = view.findViewById(R.id.workout_name)
         var repsLeftTextView: TextView = view.findViewById(R.id.reps_left)
-        var repsDoneTextView: TextView = view.findViewById(R.id.reps_done)
+        var repsDoneSummaryTextView: TextView = view.findViewById(R.id.reps_summary)
+        var repsDone: TextView = view.findViewById(R.id.reps_total)
     }
 
     @NonNull
@@ -40,7 +41,8 @@ class RepsCountAdapter(
     ) {
         val item = itemsList.get(position)
         holder.workoutNameTextView.text = item.workoutName
-        holder.repsDoneTextView.text = item.repsDone
+        holder.repsDone.text = item.repsDone.toString()
+        holder.repsDoneSummaryTextView.text = item.repsDoneSummary
         holder.repsLeftTextView.text = item.repsLeft.toString()
         holder.itemView.setOnClickListener {
             val item = itemsList.get(position)
