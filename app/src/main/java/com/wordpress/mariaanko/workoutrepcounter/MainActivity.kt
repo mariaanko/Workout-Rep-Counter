@@ -1,5 +1,6 @@
 package com.wordpress.mariaanko.workoutrepcounter
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private fun addItem() {
 
         itemsList.add(WorkoutItems("push-ups", 30, 0))
+        itemsList.add(WorkoutItems("sit-ups", 45, 0))
         repsCountAdapter.notifyDataSetChanged()
     }
 

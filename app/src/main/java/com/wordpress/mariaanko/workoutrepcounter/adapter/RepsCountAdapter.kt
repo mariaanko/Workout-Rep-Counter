@@ -33,6 +33,9 @@ internal class RepsCountAdapter (private var itemsList: ArrayList<WorkoutItems>)
         holder.workoutNameTextView.text = item.workoutName
         holder.totalRepsTextView.text = item.totalReps.toString()
         holder.repsLeftTextView.text = item.repsLeft.toString()
+        holder.itemView.setOnClickListener {
+
+        }
     }
 
 }
