@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/reps_total"
+        android:id="@+id/reps_done"
         android:layout_width="111dp"
         android:layout_height="31dp"
         android:layout_marginTop="48dp"

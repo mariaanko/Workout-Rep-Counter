@@ -1,11 +1,7 @@
 package com.wordpress.mariaanko.workoutrepcounter
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
-        repsCountAdapter = RepsCountAdapter(itemsList)
+        repsCountAdapter = RepsCountAdapter(itemsList, layoutInflater, this )
 
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
@@ -40,8 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun addItem() {
 
-        itemsList.add(WorkoutItems("push-ups", 30, 0))
-        itemsList.add(WorkoutItems("sit-ups", 45, 0))
+        itemsList.add(WorkoutItems("push-ups", 0, 30))
+        itemsList.add(WorkoutItems("sit-ups", 0, 25))
         repsCountAdapter.notifyDataSetChanged()
     }
 
