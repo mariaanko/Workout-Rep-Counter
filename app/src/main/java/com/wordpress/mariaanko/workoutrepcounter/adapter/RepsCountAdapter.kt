@@ -40,7 +40,7 @@ class RepsCountAdapter(
     ) {
         val item = itemsList.get(position)
         holder.workoutNameTextView.text = item.workoutName
-        holder.repsDoneTextView.text = item.repsDone.toString()
+        holder.repsDoneTextView.text = item.repsDone
         holder.repsLeftTextView.text = item.repsLeft.toString()
         holder.itemView.setOnClickListener {
             val item = itemsList.get(position)

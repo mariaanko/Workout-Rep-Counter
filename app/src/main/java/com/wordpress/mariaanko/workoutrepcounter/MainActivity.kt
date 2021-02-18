@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun addItem() {
 
-        itemsList.add(WorkoutItems("push-ups", 0, 30))
-        itemsList.add(WorkoutItems("sit-ups", 0, 25))
+        itemsList.add(WorkoutItems("push-ups", "0", 30))
+        itemsList.add(WorkoutItems("sit-ups", "0", 25))
         repsCountAdapter.notifyDataSetChanged()
     }
 
