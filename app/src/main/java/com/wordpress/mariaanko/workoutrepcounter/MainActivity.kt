@@ -35,9 +35,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addItem() {
-
         itemsList.add(WorkoutItems("push-ups", "0", 30, 0))
         itemsList.add(WorkoutItems("sit-ups", "0", 25, 0))
+        repsCountAdapter.notifyDataSetChanged()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("currentItems", itemsList)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        itemsList.clear()
+        itemsList.addAll(savedInstanceState.getParcelableArrayList<WorkoutItems>("currentItems") as ArrayList<WorkoutItems>)
         repsCountAdapter.notifyDataSetChanged()
     }
 
