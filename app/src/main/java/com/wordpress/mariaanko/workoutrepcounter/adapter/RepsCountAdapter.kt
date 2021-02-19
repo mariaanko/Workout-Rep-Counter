@@ -45,8 +45,11 @@ class RepsCountAdapter(
         holder.repsDoneSummaryTextView.text = item.repsDoneSummary
         holder.repsLeftTextView.text = item.repsLeft.toString()
         holder.itemView.setOnClickListener {
-            val item = itemsList.get(position)
             DialogUtils.showRepsDialog(position, itemsList, this, inflater, context)
+        }
+        holder.itemView.setOnLongClickListener {
+            DialogUtils.showDeleteDialog(position, itemsList, this, inflater, context)
+            true
         }
     }
 
