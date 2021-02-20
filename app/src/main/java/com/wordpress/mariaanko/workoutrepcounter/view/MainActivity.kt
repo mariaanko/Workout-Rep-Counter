@@ -1,17 +1,25 @@
-package com.wordpress.mariaanko.workoutrepcounter
+package com.wordpress.mariaanko.workoutrepcounter.view
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.wordpress.mariaanko.workoutrepcounter.adapter.RepsCountAdapter
-import com.wordpress.mariaanko.workoutrepcounter.adapter.WorkoutItems
+import com.wordpress.mariaanko.workoutrepcounter.DialogUtils
+import com.wordpress.mariaanko.workoutrepcounter.R
+import com.wordpress.mariaanko.workoutrepcounter.adapters.RepsCountAdapter
+import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
+import com.wordpress.mariaanko.workoutrepcounter.viewmodel.AppViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private var itemsList = ArrayList<WorkoutItems>()
     private lateinit var repsCountAdapter: RepsCountAdapter
+    private lateinit var appViewModel: AppViewModel
+    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,25 +28,29 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
+        context = this@MainActivity
+        appViewModel = ViewModelProvider(this).get(AppViewModel::class.java)
+
         repsCountAdapter = RepsCountAdapter(itemsList, layoutInflater, this)
 
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = repsCountAdapter
 
-        addItem()
+        appViewModel.getWorkouts(context)!!.observe(this, Observer {
+            itemsList.clear()
+            for(i in it){
+                itemsList.add(i.uid, WorkoutItems(i.workoutName, i.repsSummary, i.repsLeft, i.repsDone))
+            }
+            repsCountAdapter.notifyDataSetChanged()
+        })
 
         fab.setOnClickListener {
-            DialogUtils.showAddDialog(itemsList, repsCountAdapter, layoutInflater, this)
+            DialogUtils.showAddDialog(itemsList, layoutInflater, context)
         }
 
     }
 
-    private fun addItem() {
-        itemsList.add(WorkoutItems("push-ups", "0", 30, 0))
-        itemsList.add(WorkoutItems("sit-ups", "0", 25, 0))
-        repsCountAdapter.notifyDataSetChanged()
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

@@ -1,4 +1,4 @@
-package com.wordpress.mariaanko.workoutrepcounter.adapter
+package com.wordpress.mariaanko.workoutrepcounter.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,11 +9,13 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.wordpress.mariaanko.workoutrepcounter.DialogUtils
 import com.wordpress.mariaanko.workoutrepcounter.R
+import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
+import com.wordpress.mariaanko.workoutrepcounter.room.AppDatabase
 
 class RepsCountAdapter(
     private var itemsList: ArrayList<WorkoutItems>,
     val inflater: LayoutInflater,
-    val context: Context
+    val context: Context,
 ) :
     RecyclerView.Adapter<RepsCountAdapter.RepsViewHolder>() {
 
@@ -45,10 +47,10 @@ class RepsCountAdapter(
         holder.repsDoneSummaryTextView.text = item.repsDoneSummary
         holder.repsLeftTextView.text = item.repsLeft.toString()
         holder.itemView.setOnClickListener {
-            DialogUtils.showRepsDialog(position, itemsList, this, inflater, context)
+            DialogUtils.showRepsDialog(position, itemsList, inflater, context, this)
         }
         holder.itemView.setOnLongClickListener {
-            DialogUtils.showDeleteDialog(position, itemsList, this, inflater, context)
+            DialogUtils.showDeleteDialog(position, itemsList, inflater, context, this)
             true
         }
     }

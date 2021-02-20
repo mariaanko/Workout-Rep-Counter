@@ -7,14 +7,15 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.wordpress.mariaanko.workoutrepcounter.adapter.RepsCountAdapter
-import com.wordpress.mariaanko.workoutrepcounter.adapter.WorkoutItems
+import com.wordpress.mariaanko.workoutrepcounter.adapters.RepsCountAdapter
+import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
+import com.wordpress.mariaanko.workoutrepcounter.room.AppDatabase
 
 class DialogUtils {
     companion object {
         fun showAddDialog(
-            itemsList: ArrayList<WorkoutItems>, repsCountAdapter: RepsCountAdapter,
-            layoutInflater: LayoutInflater, context: Context
+            itemsList: ArrayList<WorkoutItems>,
+            layoutInflater: LayoutInflater, context: Context,
         ) {
             val addDialog = AlertDialog.Builder(context)
             val addDialogView = layoutInflater.inflate(R.layout.add_dialog, null)
@@ -50,16 +51,15 @@ class DialogUtils {
                     )
                 }
 
-                repsCountAdapter.notifyDataSetChanged()
                 alertDialog.dismiss()
             }
-
             alertDialog.show()
         }
 
         fun showRepsDialog(
-            index: Int, itemsList: ArrayList<WorkoutItems>, repsCountAdapter: RepsCountAdapter,
-            layoutInflater: LayoutInflater, context: Context
+            index: Int, itemsList: ArrayList<WorkoutItems>,
+            layoutInflater: LayoutInflater, context: Context,
+            adapter: RepsCountAdapter
         ) {
             val addDialog = AlertDialog.Builder(context)
             val addDialogView = layoutInflater.inflate(R.layout.reps_dialog, null)
@@ -88,7 +88,7 @@ class DialogUtils {
                     } else itemsList[index].repsDoneSummary = "$repsDoneSummary + $repsDoneNow"
                     itemsList[index].repsLeft = repsLeft - repsDoneNow
                     itemsList[index].repsDone = repsDone + repsDoneNow
-                    repsCountAdapter.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
                     alertDialog.dismiss()
                 } else {
                     alertDialog.dismiss()
@@ -99,8 +99,9 @@ class DialogUtils {
         }
 
         fun showDeleteDialog(
-            index: Int, itemsList: ArrayList<WorkoutItems>, repsCountAdapter: RepsCountAdapter,
-            layoutInflater: LayoutInflater, context: Context
+            index: Int, itemsList: ArrayList<WorkoutItems>,
+            layoutInflater: LayoutInflater, context: Context,
+        adapter: RepsCountAdapter
         ) {
             val addDialog = AlertDialog.Builder(context)
             val addDialogView = layoutInflater.inflate(R.layout.delete_dialog, null)
@@ -118,9 +119,8 @@ class DialogUtils {
             cancelButton.setOnClickListener { alertDialog.dismiss() }
 
             okayButton.setOnClickListener {
-
                 itemsList.removeAt(index)
-                repsCountAdapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
                 alertDialog.dismiss()
 
             }

@@ -1,11 +1,11 @@
-package com.wordpress.mariaanko.workoutrepcounter.adapter
+package com.wordpress.mariaanko.workoutrepcounter.model
 
 import android.os.Parcel
 import android.os.Parcelable
 
 data class WorkoutItems(
-    var workoutName: String,
-    var repsDoneSummary: String,
+    var workoutName: String?,
+    var repsDoneSummary: String?,
     var repsLeft: Int,
     var repsDone: Int
 ) : Parcelable{
