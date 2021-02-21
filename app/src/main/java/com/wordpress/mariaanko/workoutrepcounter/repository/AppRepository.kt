@@ -20,5 +20,15 @@ class AppRepository {
             return appDatabase!!.workoutsDao().getAll()
         }
 
+        fun insertWorkout(context: Context, workoutEntity: WorkoutsEntity) {
+            appDatabase = initializeDB(context)
+            appDatabase!!.workoutsDao().insertAll(workoutEntity)
+        }
+
+        fun deleteWorkouts(context: Context){
+            appDatabase = initializeDB(context)
+            appDatabase!!.workoutsDao().deleteAll()
+        }
+
     }
 }

@@ -11,11 +11,13 @@ import com.wordpress.mariaanko.workoutrepcounter.DialogUtils
 import com.wordpress.mariaanko.workoutrepcounter.R
 import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
 import com.wordpress.mariaanko.workoutrepcounter.room.AppDatabase
+import com.wordpress.mariaanko.workoutrepcounter.viewmodel.AppViewModel
 
 class RepsCountAdapter(
     private var itemsList: ArrayList<WorkoutItems>,
     val inflater: LayoutInflater,
     val context: Context,
+    val appViewModel: AppViewModel
 ) :
     RecyclerView.Adapter<RepsCountAdapter.RepsViewHolder>() {
 
@@ -47,10 +49,10 @@ class RepsCountAdapter(
         holder.repsDoneSummaryTextView.text = item.repsDoneSummary
         holder.repsLeftTextView.text = item.repsLeft.toString()
         holder.itemView.setOnClickListener {
-            DialogUtils.showRepsDialog(position, itemsList, inflater, context, this)
+            DialogUtils.showRepsDialog(position, itemsList, inflater, context, this, appViewModel)
         }
         holder.itemView.setOnLongClickListener {
-            DialogUtils.showDeleteDialog(position, itemsList, inflater, context, this)
+            DialogUtils.showDeleteDialog(position, itemsList, inflater, context, this, appViewModel)
             true
         }
     }

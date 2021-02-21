@@ -31,22 +31,27 @@ class MainActivity : AppCompatActivity() {
         context = this@MainActivity
         appViewModel = ViewModelProvider(this).get(AppViewModel::class.java)
 
-        repsCountAdapter = RepsCountAdapter(itemsList, layoutInflater, this)
+        repsCountAdapter = RepsCountAdapter(itemsList, layoutInflater, this, appViewModel)
 
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = repsCountAdapter
 
-        appViewModel.getWorkouts(context)!!.observe(this, Observer {
-            itemsList.clear()
-            for(i in it){
-                itemsList.add(i.uid, WorkoutItems(i.workoutName, i.repsSummary, i.repsLeft, i.repsDone))
+        appViewModel.getWorkouts(context).observe(this, Observer {
+            if (it.isNotEmpty()) {
+                itemsList.clear()
+                for ((index, i) in it.withIndex()) {
+                    itemsList.add(
+                        index,
+                        WorkoutItems(i.workoutName, i.repsSummary, i.repsLeft, i.repsDone)
+                    )
+                }
+                repsCountAdapter.notifyDataSetChanged()
             }
-            repsCountAdapter.notifyDataSetChanged()
         })
 
         fab.setOnClickListener {
-            DialogUtils.showAddDialog(itemsList, layoutInflater, context)
+            DialogUtils.showAddDialog(itemsList, layoutInflater, context, appViewModel)
         }
 
     }
@@ -62,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         itemsList.clear()
         itemsList.addAll(savedInstanceState.getParcelableArrayList<WorkoutItems>("currentItems") as ArrayList<WorkoutItems>)
         repsCountAdapter.notifyDataSetChanged()
+        appViewModel.saveWorkouts(context, itemsList)
     }
 
 }

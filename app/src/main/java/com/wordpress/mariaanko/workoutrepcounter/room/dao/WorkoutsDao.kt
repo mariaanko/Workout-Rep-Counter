@@ -9,7 +9,7 @@ interface WorkoutsDao {
     @Query("SELECT * FROM workouts")
     fun getAll(): LiveData<List<WorkoutsEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insertAll(vararg workoutsEntity: WorkoutsEntity)
 
     @Query("DELETE FROM workouts")

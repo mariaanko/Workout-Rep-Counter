@@ -7,15 +7,19 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.wordpress.mariaanko.workoutrepcounter.adapters.RepsCountAdapter
 import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
 import com.wordpress.mariaanko.workoutrepcounter.room.AppDatabase
+import com.wordpress.mariaanko.workoutrepcounter.viewmodel.AppViewModel
 
 class DialogUtils {
     companion object {
         fun showAddDialog(
             itemsList: ArrayList<WorkoutItems>,
             layoutInflater: LayoutInflater, context: Context,
+            appViewModel: AppViewModel
         ) {
             val addDialog = AlertDialog.Builder(context)
             val addDialogView = layoutInflater.inflate(R.layout.add_dialog, null)
@@ -43,14 +47,14 @@ class DialogUtils {
                 } else {
                     itemsList.add(
                         WorkoutItems(
-                            workoutNameInput.text.toString(),
-                            "0",
-                            Integer.parseInt(workoutTotalRepsInput.text.toString()),
-                            0
+                            workoutName = workoutNameInput.text.toString(),
+                            repsDoneSummary = "0",
+                            repsLeft = Integer.parseInt(workoutTotalRepsInput.text.toString()),
+                            repsDone = 0
                         )
                     )
                 }
-
+                appViewModel.saveWorkouts(context, itemsList)
                 alertDialog.dismiss()
             }
             alertDialog.show()
@@ -59,7 +63,8 @@ class DialogUtils {
         fun showRepsDialog(
             index: Int, itemsList: ArrayList<WorkoutItems>,
             layoutInflater: LayoutInflater, context: Context,
-            adapter: RepsCountAdapter
+            adapter: RepsCountAdapter,
+            appViewModel: AppViewModel
         ) {
             val addDialog = AlertDialog.Builder(context)
             val addDialogView = layoutInflater.inflate(R.layout.reps_dialog, null)
@@ -89,6 +94,7 @@ class DialogUtils {
                     itemsList[index].repsLeft = repsLeft - repsDoneNow
                     itemsList[index].repsDone = repsDone + repsDoneNow
                     adapter.notifyDataSetChanged()
+                    appViewModel.saveWorkouts(context, itemsList)
                     alertDialog.dismiss()
                 } else {
                     alertDialog.dismiss()
@@ -101,11 +107,13 @@ class DialogUtils {
         fun showDeleteDialog(
             index: Int, itemsList: ArrayList<WorkoutItems>,
             layoutInflater: LayoutInflater, context: Context,
-        adapter: RepsCountAdapter
+            adapter: RepsCountAdapter,
+            appViewModel: AppViewModel
         ) {
             val addDialog = AlertDialog.Builder(context)
             val addDialogView = layoutInflater.inflate(R.layout.delete_dialog, null)
-            val deleteDialogTextView: TextView = addDialogView.findViewById(R.id.delete_dialog_textview)
+            val deleteDialogTextView: TextView =
+                addDialogView.findViewById(R.id.delete_dialog_textview)
 
             val cancelButton: Button = addDialogView.findViewById(R.id.btn_cancel)
             val okayButton: Button = addDialogView.findViewById(R.id.btn_okay)
@@ -114,15 +122,16 @@ class DialogUtils {
             val alertDialog: AlertDialog = addDialog.create()
             alertDialog.setCanceledOnTouchOutside(false)
 
-            deleteDialogTextView.text = "Do you want to delete \"${itemsList.get(index).workoutName}\"?"
+            deleteDialogTextView.text =
+                "Do you want to delete \"${itemsList.get(index).workoutName}\"?"
 
             cancelButton.setOnClickListener { alertDialog.dismiss() }
 
             okayButton.setOnClickListener {
                 itemsList.removeAt(index)
                 adapter.notifyDataSetChanged()
+                appViewModel.saveWorkouts(context, itemsList)
                 alertDialog.dismiss()
-
             }
 
             alertDialog.show()
