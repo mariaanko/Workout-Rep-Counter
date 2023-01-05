@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
 import com.wordpress.mariaanko.workoutrepcounter.repository.AppRepository
 import com.wordpress.mariaanko.workoutrepcounter.room.model.WorkoutsEntity
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -16,18 +16,39 @@ class AppViewModel : ViewModel() {
         return AppRepository.getWorkouts(context)
     }
 
-    fun saveWorkouts(context: Context, workoutItems: ArrayList<WorkoutItems>) {
-        val thread = Thread{
-            AppRepository.deleteWorkouts(context)
+    fun resetWorkouts(context: Context, workoutItems: ArrayList<WorkoutItems>) {
+        runBlocking {
+            val thread = Thread {
+                AppRepository.deleteWorkouts(context)
+                for (workoutItem in workoutItems) {
+                    AppRepository.insertWorkout(
+                        context,
+                        WorkoutsEntity(
+                            workoutName = workoutItem.workoutName,
+                            repsSummary = "",
+                            repsDone = 0,
+                            repsLeft = workoutItem.repsLeftInitial,
+                            repsLeftInitial = workoutItem.repsLeftInitial
+                        )
+                    )
+                }
+            }
+            thread.start()
+        }
+    }
 
-            for ( workoutItem in workoutItems) {
+    fun saveWorkouts(context: Context, workoutItems: ArrayList<WorkoutItems>) {
+        val thread = Thread {
+            AppRepository.deleteWorkouts(context)
+            for (workoutItem in workoutItems) {
                 AppRepository.insertWorkout(
                     context,
                     WorkoutsEntity(
                         workoutName = workoutItem.workoutName,
                         repsSummary = workoutItem.repsDoneSummary,
                         repsLeft = workoutItem.repsLeft,
-                        repsDone = workoutItem.repsDone
+                        repsDone = workoutItem.repsDone,
+                        repsLeftInitial = workoutItem.repsLeftInitial
                     )
                 )
             }

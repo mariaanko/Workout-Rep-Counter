@@ -10,7 +10,7 @@ import com.wordpress.mariaanko.workoutrepcounter.room.dao.WorkoutsHistoryDao
 import com.wordpress.mariaanko.workoutrepcounter.room.model.WorkoutsEntity
 import com.wordpress.mariaanko.workoutrepcounter.room.model.WorkoutsHistoryEntity
 
-@Database(entities = [WorkoutsEntity::class, WorkoutsHistoryEntity::class], version = 1)
+@Database(entities = [WorkoutsEntity::class, WorkoutsHistoryEntity::class], version = 2)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun workoutsDao(): WorkoutsDao
