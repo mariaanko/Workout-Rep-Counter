@@ -1,2 +1,2 @@
 # Workout-Rep-Counter
-Androd app written in Kotlin
+Aaaaaaandrod app written in Kotlin
