@@ -10,5 +10,6 @@ data class WorkoutsEntity (
             @ColumnInfo(name = "workout_name") val workoutName: String?,
             @ColumnInfo(name = "reps_summary") val repsSummary: String?,
             @ColumnInfo(name = "reps_left") val repsLeft: Int,
+            @ColumnInfo(name = "reps_left_initial") val repsLeftInitial: Int,
             @ColumnInfo(name = "reps_done") val repsDone: Int
         )

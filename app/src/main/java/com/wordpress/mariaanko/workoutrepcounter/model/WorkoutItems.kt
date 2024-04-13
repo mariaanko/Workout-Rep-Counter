@@ -7,11 +7,13 @@ data class WorkoutItems(
     var workoutName: String?,
     var repsDoneSummary: String?,
     var repsLeft: Int,
+    var repsLeftInitial: Int,
     var repsDone: Int
 ) : Parcelable{
     constructor(parcel : Parcel): this(
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readInt()
     )
@@ -21,6 +23,7 @@ data class WorkoutItems(
         parcel.writeString(repsDoneSummary)
         parcel.writeInt(repsLeft)
         parcel.writeInt(repsDone)
+        parcel.writeInt(repsLeftInitial)
     }
 
     override fun describeContents(): Int {

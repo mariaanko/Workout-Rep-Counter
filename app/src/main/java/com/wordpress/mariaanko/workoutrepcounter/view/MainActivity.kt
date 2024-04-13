@@ -1,8 +1,10 @@
 package com.wordpress.mariaanko.workoutrepcounter.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import com.wordpress.mariaanko.workoutrepcounter.adapters.RepsCountAdapter
 import com.wordpress.mariaanko.workoutrepcounter.model.WorkoutItems
 import com.wordpress.mariaanko.workoutrepcounter.viewmodel.AppViewModel
 
+
 class MainActivity : AppCompatActivity() {
 
     private var itemsList = ArrayList<WorkoutItems>()
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -43,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 for ((index, i) in it.withIndex()) {
                     itemsList.add(
                         index,
-                        WorkoutItems(i.workoutName, i.repsSummary, i.repsLeft, i.repsDone)
+                        WorkoutItems(i.workoutName, i.repsSummary, i.repsLeft, i.repsLeftInitial, i.repsDone)
                     )
                 }
                 repsCountAdapter.notifyDataSetChanged()
@@ -56,6 +60,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_reset -> {
+            appViewModel.resetWorkouts(context, itemsList)
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -70,4 +84,8 @@ class MainActivity : AppCompatActivity() {
         appViewModel.saveWorkouts(context, itemsList)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
 }

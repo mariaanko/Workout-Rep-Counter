@@ -50,6 +50,7 @@ class DialogUtils {
                             workoutName = workoutNameInput.text.toString(),
                             repsDoneSummary = "0",
                             repsLeft = Integer.parseInt(workoutTotalRepsInput.text.toString()),
+                            repsLeftInitial = Integer.parseInt(workoutTotalRepsInput.text.toString()),
                             repsDone = 0
                         )
                     )
