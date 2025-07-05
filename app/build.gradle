@@ -5,13 +5,13 @@ plugins {
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
     buildToolsVersion '34.0.0'
 
     defaultConfig {
         applicationId "com.wordpress.mariaanko.workoutrepcounter"
         minSdkVersion 19
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode 4
         versionName "1.1.2"
 
@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '21'
     }
     namespace 'com.wordpress.mariaanko.workoutrepcounter'
 }
